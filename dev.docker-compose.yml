@@ -1,0 +1,31 @@
+version: "3.7"
+
+# Configuração dos containers
+services: 
+
+  php-apache:
+    build: ./
+    image: phpcrud
+    volumes:
+      - /home/lennon/Documentos/crudphp:/var/www/html
+      - ./php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      - db-crud
+    ports:
+      - "80:80"
+    networks:
+      web-bridge:
+
+  db-crud:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: dbpass
+    ports:
+      - "3306:3306"
+    networks:
+      web-bridge:
+        aliases:
+          - mysql.local
+
+networks:
+  web-bridge:
